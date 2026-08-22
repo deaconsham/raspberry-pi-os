@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CLionExternalBuildManager">
+    <target id="93edc14b-7bd4-482f-a8c2-86c2bfe7d788" name="Docker Build" defaultType="TOOL">
+      <configuration id="01741337-2d6d-4113-9dd1-2757e73423ea" name="Docker Build">
+        <build type="TOOL">
+          <tool actionId="Tool_External Tools_Run build.sh" />
+        </build>
+      </configuration>
+    </target>
+  </component>
+</project>
