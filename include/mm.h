@@ -1,5 +1,4 @@
-#ifndef	_MM_H
-#define	_MM_H
+#pragma once
 
 #define PAGE_SHIFT	 		12
 #define TABLE_SHIFT 			9
@@ -15,5 +14,3 @@
 void memzero(unsigned long src, unsigned long n);
 
 #endif
-
-#endif  /*_MM_H */
