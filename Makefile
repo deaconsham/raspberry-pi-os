@@ -1,4 +1,4 @@
-ARMGNU ?= aarch64-linux-gnu
+ARMGNU ?= aarch64-unknown-linux-gnu
 
 COPS = -Wall -nostdlib -nostartfiles -ffreestanding -Iinclude -mgeneral-regs-only
 ASMOPS = -Iinclude
@@ -29,3 +29,6 @@ DEP_FILES = $(OBJ_FILES:%.o=%.d)
 kernel8.img: $(SRC_DIR)/linker.ld $(OBJ_FILES)
 	$(ARMGNU)-ld -T $(SRC_DIR)/linker.ld -o $(BUILD_DIR)/kernel8.elf  $(OBJ_FILES)
 	$(ARMGNU)-objcopy $(BUILD_DIR)/kernel8.elf -O binary kernel8.img
+
+qemu: kernel8.img
+	qemu-system-aarch64 -M raspi3b -smp 4 -kernel kernel8.img -serial stdio
