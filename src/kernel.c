@@ -5,6 +5,12 @@
 // set to 1 by core 0 when the uart is ready, other cores wait for it
 volatile int uart_ready = 0;
 
+struct message {
+    char text[32];
+} __attribute__((aligned(16)));
+
+static const struct message hello = { "Hello, from processor " };
+
 void kernel_main(uint64_t core_id)
 {
     if (core_id == 0) {
@@ -21,7 +27,11 @@ void kernel_main(uint64_t core_id)
         delay(core_id * 2000000);
     }
 
-    uart_send_string("Hello, from processor ");
+    // the greeting is copied as a whole 32-byte, 16-byte aligned struct on
+    // purpose: gcc does that with ldp/stp of q0/q1 (FP/SIMD registers)
+    // unless -mgeneral-regs-only is used
+    struct message greeting = hello;
+    uart_send_string(greeting.text);
     uart_send(core_id + '0');
     uart_send_string("\r\n");
 
