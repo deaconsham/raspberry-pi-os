@@ -11,16 +11,18 @@
 /*
  *  - Exception levels (EL0-EL3) are CPU privilege levels, higher = more power:
  *    EL3 = firmware, EL2 = hypervisor, EL1 = kernel (us), EL0 = user code.
- *  - The CPU only drops a level by returning from an exception, so we fake one: 
- *    set spsr_elX (state to return to) and elr_elX (address to return to), then eret.
- *  - bss holds uninitialized globals. It takes no space in kernel8.img,
- *    so nobody zeroes it for us; we do it below.
- *  - Calling convention: arguments go in x0, x1, ...; bl saves the return address in x30 (the link register) and ret jumps back to it.
+ *  - The CPU only drops a level by returning from an exception, so we fake
+ *    one: set spsr_elX (state to return to) and elr_elX (address to return
+ *    to), then eret.
+ *  - bss holds uninitialized globals. It takes no space in kernel8.img, so
+ *    nobody zeroes it for us; we do it below.
+ *  - Calling convention: arguments go in x0, x1, ...; bl saves the return
+ *    address in x30 (the link register) and ret jumps back to it.
  */
 
 /*
- * Entry point for every core: core 0, and cores 1-3 once released from the spin table.
- * The firmware leaves us at:
+ * Entry point for every core: core 0, and cores 1-3 once released from the
+ * spin table. The firmware leaves us at:
  *   - EL3 on real hardware (old firmware)
  *   - EL2 on qemu raspi3b with -kernel (no EL3 firmware is emulated)
  * Each core then steps down to EL1.
@@ -35,9 +37,11 @@ _start:
     b      el1_entry            // already at EL1
 
 /*
- * EL3 to EL2. Only reached when entering at EL3: EL3 registers can't be accessed from EL2 (msr scr_el3 traps on qemu).
+ * EL3 -> EL2. Only reached when entering at EL3: EL3 registers can't be
+ * accessed from EL2 (msr scr_el3 traps on qemu).
  *
- * ldr xN, =CONST loads a constant too large for mov from a nearby literal pool.
+ * ldr xN, =CONST loads a constant too large for mov from a nearby literal
+ * pool.
  */
 el3_entry:
     ldr    x0, =SCR_VALUE       // EL2 non-secure, AArch64 below EL3
@@ -95,7 +99,8 @@ el1_entry:
     sub    x1, x1, x0           // arg 2: size
     bl     memzero
 
-    // core 0: release cores 1-3. each parked core polls its 8-byte slot and jumps to the address there once it is non-zero
+    // core 0: release cores 1-3. each parked core polls its 8-byte slot
+    // and jumps to the address there once it is non-zero
     adr    x1, _start
     mov    x2, #0xE0            // core 1 slot
     str    x1, [x2]

@@ -1,9 +1,9 @@
 /*
  * Memory-mapped I/O helpers.
  *
- * Peripheral registers (UART, GPIO, ...) live at fixed addresses;
- * accessing those addresses talks to the hardware instead of RAM.
- * Registers are 32-bit, so values use w registers and addresses use x registers.
+ * Peripheral registers (UART, GPIO, ...) live at fixed addresses; accessing
+ * those addresses talks to the hardware instead of RAM. Registers are 32-bit,
+ * so values use w registers and addresses use x registers.
  */
 
 /*
@@ -33,7 +33,8 @@ get32:
  *
  * x0 - iterations to spin
  *
- * Crude busy-wait for GPIO settle time (uart.c) and core staggering (kernel.c). delay(0) underflows and spins (almost) forever.
+ * Crude busy-wait for GPIO settle time (uart.c) and core staggering
+ * (kernel.c). delay(0) underflows and spins (almost) forever.
  */
 .globl delay
 delay:
