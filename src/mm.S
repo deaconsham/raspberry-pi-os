@@ -4,9 +4,8 @@
  * x0 - start address, 8-byte aligned
  * x1 - size in bytes, multiple of 8
  *
- * Zeroes memory; boot.S uses it to clear bss. The loop stores before it
- * checks, so it always clears at least 8 bytes (even when size is 0) and
- * overshoots if size isn't a multiple of 8.
+ * Zeroes memory; boot.S uses it to clear bss. The loop stores before it checks,
+ * so it always clears at least 8 bytes (even when size is 0) and overshoots if size isn't a multiple of 8.
  */
 .globl memzero
 memzero:
